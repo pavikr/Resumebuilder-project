@@ -10,10 +10,7 @@
     align-items: flex-start;
     flex-direction: column;
     gap: 10px;
-  
-
-   
- }
+  }
  
  .container{
   background-image: linear-gradient(to right, #fcfcfd, #fbfafe, #fbf9fe, #fbf7fe, #fcf5fd);
