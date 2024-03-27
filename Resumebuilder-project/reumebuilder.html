@@ -268,7 +268,10 @@
     const app = initializeApp(firebaseConfig);
     const db=getFirestore(app)
     document.getElementById('saveResume').addEventListener('click',async (e)=>{
-    const docRef=await addDoc(collection(db,"resumes"),myResume);
+    let existing_data=localStorage.getItem("userdatas")
+    let parsed_data=JSON.parse(existing_data)
+
+    const docRef=await addDoc(collection(db,"resumes"),{...myResume,userid:parsed_data.id});
     window.location=`list.html?resume_id=${docRef.id}`;
     })
 

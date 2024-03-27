@@ -49,7 +49,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getFirestore,setDoc,addDoc,doc,collection,getDocs,deleteDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        import { getFirestore,setDoc,addDoc,doc,collection,getDocs,query,where } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
         // TODO: Add SDKs for Firebase products that you want to use
         // https://firebase.google.com/docs/web/setup#available-libraries
       
@@ -67,7 +67,9 @@
         const app = initializeApp(firebaseConfig);
         const db=getFirestore(app);
     function getdoc(){  
-    getDocs(collection(db,"resumes")).then(docSnap =>{
+    let existing_data=localStorage.getItem("userdatas")
+    let parsed_data=JSON.parse(existing_data)
+    getDocs(query(collection(db,"resumes"),where("userid","==",parsed_data.id))).then(docSnap =>{
         let params4= new URLSearchParams(document.location.search);
         let resume_id=params4.get("resume_id");  
         let renderHTML="";
@@ -77,7 +79,7 @@
            
             if( resume_id==doc.id){
         // let eachResume=doc.data()
-       renderHTML=renderHTML+`<li><a href="view.html?id=${doc.id}">${doc.data().title}</a><button type="button" onclick="deleteData('${doc.id}')">Delete</button>
+       renderHTML=renderHTML+`<li><a href="view.html?id=${doc.id}">${doc.data().title}</a><button type="button" onclick="testData('${doc.id}')">Delete</button>
        <a href="edit.html?id=${doc.id}"><button type="button">Edit</button></a></li>`
        }
    
@@ -95,7 +97,7 @@ function deleteData(dataid){
     deleteDoc(doc(db,"resumes",dataid));
 getdoc()
     }
-    window.deleteData=deleteData
+    window.testData=deleteData
 
         
 </script>
@@ -103,3 +105,31 @@ getdoc()
 
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
