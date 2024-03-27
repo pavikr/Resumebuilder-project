@@ -1,0 +1,137 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in form</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+    <div class="container">
+        <div class="main">
+            <input type="checkbox" id="chk" aria-hidden="true">
+            <div class="login">
+                <form class="form">
+                    <label for="chk" aria-hidden="true">Log in</label>
+                    <input class="input" type="email" id="mail" name="email" placeholder="Email" required="" >
+                    <input type="password" id="pass" name="email" placeholder="password" required="" >
+                    <button type="button" id="loginThis">Log in</button>
+                </form>
+            </div>
+            <div class="register">
+                <form class="form">
+                    <label for="chk" aria-hidden="true">Register</label>
+                    <input type="text" id="name1" placeholder="Username" autocomplete="off"  required="" >
+                    <input type="email" id="email1" name="email" placeholder="Email" autocomplete="off" required="" >
+                    <input type="password" id="password1" name="paswd" placeholder="password" autocomplete="off"  required="" >
+                    <button type="button" id="submitData">Register</button>
+                </form>
+
+            </div>
+            </div>
+         </div>
+        
+
+    <!-- <h1>Login</h1>
+    <label >Email</label>
+    <input type="email'" placeholder="Enter your email" id="mail"/><br>
+    <label>password</label>
+    <input type="password" placeholder="Enter your password" id="pass"/><br>
+
+    <button type="button" id="loginThis">login</button>
+     -->
+
+
+    <!-- <button type="button" id="register">Register</button> -->
+</body>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getFirestore, addDoc, collection, getDocs, doc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBPPPJea_7wZNMX17I1WSKwhrpfxNEcABQ",
+        authDomain: "resume-builder-aceb0.firebaseapp.com",
+        projectId: "resume-builder-aceb0",
+        storageBucket: "resume-builder-aceb0.appspot.com",
+        messagingSenderId: "588683110495",
+        appId: "1:588683110495:web:a19530bf7d9c17ce8d53ea"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app)
+
+    let params = new URLSearchParams(document.location.search);
+    let id = params.get("id");
+    submitData.addEventListener('click',async(e)=>{
+            var data_name=document.getElementById("name1").value;
+            var data_email=document.getElementById("email1").value;
+            var data_password=document.getElementById("password1").value;
+            if(data_name=="" ||  data_email=="" || data_password==""){
+                alert("please fill the field")
+            }
+            
+         const firebaseid= await addDoc(collection(db,"register"),{
+                name:data_name,
+                email:data_email,
+                password:data_password
+
+                
+            })
+            
+            // console.log(datname,email,password)
+            const eachid=firebaseid.id;
+         window.location=`login.html?id=${eachid}`
+         alert(1)
+        })  
+
+    loginThis.addEventListener('click', (e) => {
+        getDocs(collection(db, "register")).then(logpage => {
+            let email = document.getElementById("mail").value;
+            let password = document.getElementById("pass").value;
+            if (email == "" && password == "") {
+                alert("please fill the details")
+            }
+            let userdata = false;
+            logpage.forEach((each) => {
+                let data = each.data();
+                if (email == data.email && password == data.password) {
+                    userdata = {
+                        mail: data.email,
+                        id: each.id,
+                        name: data.name
+                    }
+                    localStorage.setItem("userdatas", JSON.stringify(userdata))
+                    location = `resumelist.html?id=${each.id}`
+                    userdata = true
+                }
+
+            })
+            if (!userdata) {
+                alert("your email or password incorrect")
+            }
+        })
+
+    })
+
+
+    // const q=query(collection(db,'register'),where("email","==","pavidhaks@gmail.com")&&("password","==","krish2020@"));
+    // getDocs(q).then(docsnap=>{
+    //     let users=[];
+    //     docsnap.forEach((doc)=>{
+    //         users.push({...doc.data(),id:doc.id})
+
+    //     });
+    //     console.log("Document Data:",users[0]['name']);
+
+    // });
+
+
+</script>
+
+</html>

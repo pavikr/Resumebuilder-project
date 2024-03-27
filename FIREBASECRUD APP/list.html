@@ -1,0 +1,105 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="resumebuilder.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url("pic1.jpg");
+            font-family: "Roboto", sans-serif;
+            font-weight: 200px;
+            
+
+        }
+        div{
+            background: rgb(238,174,202);
+            background: linear-gradient(90deg, rgba(238,174,202,1) , rgba(205,227,226,0.25253851540616246) );
+            width:50%;
+            height: 70%;
+            background: transparent;
+            
+            
+        }
+    </style>
+</head>
+<body>
+    <div>
+   
+    <h1>RESUME TITLE</h1>
+    
+    <ul id="list">
+        <!-- <li> <a href="view.html">pavithra</a>
+
+
+            </li> -->
+            
+    </ul>
+</div>
+   
+    </body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getFirestore,setDoc,addDoc,doc,collection,getDocs,deleteDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyBPPPJea_7wZNMX17I1WSKwhrpfxNEcABQ",
+          authDomain: "resume-builder-aceb0.firebaseapp.com",
+          projectId: "resume-builder-aceb0",
+          storageBucket: "resume-builder-aceb0.appspot.com",
+          messagingSenderId: "588683110495",
+          appId: "1:588683110495:web:a19530bf7d9c17ce8d53ea"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db=getFirestore(app);
+    function getdoc(){  
+    getDocs(collection(db,"resumes")).then(docSnap =>{
+        let params4= new URLSearchParams(document.location.search);
+        let resume_id=params4.get("resume_id");  
+        let renderHTML="";
+        // let list=document.getElementById('list').Value;  
+        docSnap.forEach((doc)=>{
+          
+           
+            if( resume_id==doc.id){
+        // let eachResume=doc.data()
+       renderHTML=renderHTML+`<li><a href="view.html?id=${doc.id}">${doc.data().title}</a><button type="button" onclick="deleteData('${doc.id}')">Delete</button>
+       <a href="edit.html?id=${doc.id}"><button type="button">Edit</button></a></li>`
+       }
+   
+   
+
+document.getElementById("list").innerHTML=renderHTML;
+}) 
+    }) 
+    }
+    getdoc()
+
+
+function deleteData(dataid){
+
+    deleteDoc(doc(db,"resumes",dataid));
+getdoc()
+    }
+    window.deleteData=deleteData
+
+        
+</script>
+
+
+
+</html>
