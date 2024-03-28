@@ -70,19 +70,18 @@
     let existing_data=localStorage.getItem("userdatas")
     let parsed_data=JSON.parse(existing_data)
     getDocs(query(collection(db,"resumes"),where("userid","==",parsed_data.id))).then(docSnap =>{
-        let params4= new URLSearchParams(document.location.search);
-        let resume_id=params4.get("resume_id");  
+        // let params4= new URLSearchParams(document.location.search);
+        // let resume_id=params4.get("resume_id");  
         let renderHTML="";
         // let list=document.getElementById('list').Value;  
         docSnap.forEach((doc)=>{
           
            
-            if( resume_id==doc.id){
+            
         // let eachResume=doc.data()
        renderHTML=renderHTML+`<li><a href="view.html?id=${doc.id}">${doc.data().title}</a><button type="button" onclick="testData('${doc.id}')">Delete</button>
        <a href="edit.html?id=${doc.id}"><button type="button">Edit</button></a></li>`
-       }
-   
+       
    
 
 document.getElementById("list").innerHTML=renderHTML;
