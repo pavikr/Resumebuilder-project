@@ -272,7 +272,7 @@
     let parsed_data=JSON.parse(existing_data)
 
     const docRef=await addDoc(collection(db,"resumes"),{...myResume,userid:parsed_data.id});
-    window.location=`list.html?resume_id=${docRef.id}`;
+    window.location=`list.html`;
     })
 
     if(!localStorage.getItem("userdatas")){
