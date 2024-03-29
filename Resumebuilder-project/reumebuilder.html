@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script defer src="resumebuilder.js" type="text/javaScript">
+
     </script>
+    <script src="firebase.js" type="module/javaScript"></script>
     <link rel="stylesheet" href="resumebuilder.css">
     <style>
         /* .dropbtn {
@@ -226,8 +228,9 @@
 
                 <!-- <button type="submit" onclick="alert()">submit</button> -->
                
-                <button type="button" id="saveResume">save</button> 
+                <button type="button" onclick="saveResume()">save</button> 
                 <button type="button" onclick="logout()">logout</button>
+                <!-- <button type="button" onclick="getdata()"></button> -->
 
         </form>
         </div>
@@ -241,44 +244,17 @@
     
     
 </body>
-<script>
+ <script>
     function logout(){
         localStorage.removeItem("userdatas")
         window.location="login.html"
     }
-</script>
-<script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-    import { getFirestore,addDoc,collection } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBPPPJea_7wZNMX17I1WSKwhrpfxNEcABQ",
-      authDomain: "resume-builder-aceb0.firebaseapp.com",
-      projectId: "resume-builder-aceb0",
-      storageBucket: "resume-builder-aceb0.appspot.com",
-      messagingSenderId: "588683110495",
-      appId: "1:588683110495:web:a19530bf7d9c17ce8d53ea"
-    };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db=getFirestore(app)
-    document.getElementById('saveResume').addEventListener('click',async (e)=>{
-    let existing_data=localStorage.getItem("userdatas")
-    let parsed_data=JSON.parse(existing_data)
+</script> 
 
-    const docRef=await addDoc(collection(db,"resumes"),{...myResume,userid:parsed_data.id});
-    window.location=`list.html`;
-    })
-
+<script>
+    
     if(!localStorage.getItem("userdatas")){
-    location="login.html"
-}
-
-  </script>
-
+        location="login.html"
+    }
+</script>
 </html>

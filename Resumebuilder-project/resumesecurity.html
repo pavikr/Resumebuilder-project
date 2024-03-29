@@ -8,7 +8,11 @@
 <body>
 
 </body>
+<script type="module" src="firebase.js"></script>
 <script type="module">
+  getData()
+</script>
+<!-- <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getFirestore,setDoc,addDoc,doc,collection,getDocs,deleteDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
         // TODO: Add SDKs for Firebase products that you want to use
@@ -27,33 +31,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebas
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db=getFirestore(app);
-        let params= new URLSearchParams(document.location.search);
-        let id=params.get("id");
-getDocs(collection(db,"register")).then(docSnap=>{
-    let users=[];
-    docSnap.forEach((doc)=>{
-        users.push({...doc.data(),id:doc.id})
-    });
-    console.log("Documents Data:",users);
+       
 
-    let params= new URLSearchParams(document.location.search);
-    let firebaseid=params.get("id");
-    console.log(firebaseid);
-    
-    let existing_data=localStorage.getItem("userdatas")
-    let parsed_data=JSON.parse(existing_data)
-
-
-        if(parsed_data['id']==firebaseid){
-            window.location=`reumebuilder.html`
-        }
-    
-    else {
-        window.location="login.html"
-    }
-
-
-})
-
-</script>
+</script> -->
 </html>

@@ -110,6 +110,7 @@
 
 </body>
 <script>
+    const editResume={};
     function addData(id){
         if(id=='skill_inputdata'){
         let create_add=document.createElement("input");
@@ -166,7 +167,11 @@
         getDocs(collection(db,"resumes")).then(docSnap =>{
         docSnap.forEach((doc)=>{
             if(id==doc.id){
+
+
                 let resumeData=doc.data();
+                editResume = resumeData;
+
     document.getElementById("new").value = resumeData.title
     document.getElementById("name").value = resumeData.name
     document.getElementById("contact").value = resumeData.contact
@@ -260,7 +265,7 @@ let updated_mothername=document.getElementById("mothername").value
 let update_skills=document.getElementsByClassName("skill");
 let update_languages=document.getElementsByClassName("language");
 let update_hobbies=document.getElementsByClassName("hobby");
-let update_education=document.getElementsByClassName("education-input");
+// let update_education=document.getElementsByClassName("education-input");
 
 let editskills=[];
 for(const each of update_skills){
@@ -500,5 +505,9 @@ docSnap.data()['education'][each]['year']=update_year
 
 </script> -->
 
+
+if(!localStorage.getItem("userdatas")){
+    location="login.html"
+}
 
 </html>
