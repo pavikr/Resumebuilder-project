@@ -13,6 +13,7 @@
             padding: 10px;
         }
     </style>
+    <script type="module" src="firebase.js"></script>
 
 <body>
     <h1>RESUME</h1>
@@ -39,7 +40,7 @@
     <label>Address</label>
     <input type="text" id="address"></input><br><br>
     <label>DOB</label>
-    <input type="text" id="DOB"></input><br><br>
+    <input type="date" id="DOB"></input><br><br>
      
     
     <label>skills</label>
@@ -64,12 +65,12 @@
             <th>course_name</th>
             <th>inst_name</th>
             <th>percentage</th>
-            <th> year_of_experience</th>
+            <th> year_of_passed</th>
         </thead>
         <tbody id="education-data">
         </tbody>
     </table>
-    <!-- <button type="button" onclick="educataddData()">add education</button><br> -->
+    <button type="button" onclick="educataddData()">add education</button><br>
 
     <h2>Project</h2>
     <table border="1">
@@ -83,7 +84,7 @@
 
         </tbody>
     </table>
-    <!-- <button type="button" onclick="projectaddData()">add project</button><br> -->
+    <button type="button" onclick="projectaddData()">add project</button><br>
 
     <h2>experience</h2>
     <table border="1">
@@ -97,417 +98,42 @@
 
         </tbody>
     </table>
-    <!-- <button type="button" onclick="experienceaddData()">add new experience</button><br>
-     -->
+    <button type="button" onclick="experienceaddData()">add new experience</button><br>
+     
     
     
     <h2>declaration</h2>
     <input type="text" id="declaration"></input><br><br>
-    <button type="button" id="updateData">update</button>
+    <button type="button" onclick="updatedata()">update</button>
    
 
 
 
 </body>
-<script>
-    const editResume={};
-    function addData(id){
-        if(id=='skill_inputdata'){
-        let create_add=document.createElement("input");
-        create_add.setAttribute('type','text');
-        create_add.setAttribute('class','skill');
-        create_add.setAttribute('placeholder','Enter your skills');
-        document.getElementById("skill_inputdata").appendChild(create_add);
+
+ <script type="module">
+    getEditData('edit')
+     getEditData('update')
+     addData()
+     educataddData()
+     projectaddData()
+     experienceaddData()
+
+    
+    // function addData(id){
         
-    }
-     else if(id=="language_inputdata"){
-        let create_add=document.createElement("input");
-        create_add.setAttribute('type','text');
-        create_add.setAttribute('class','language');
-        create_add.setAttribute('placeholder','Enter your languages');
-        document.getElementById("language_inputdata").appendChild(create_add)
-        
-        }
-        else if(id=="hobby_inputdata"){
-        let create_add=document.createElement("input");
-        create_add.setAttribute('type','text');
-        create_add.setAttribute('class','hobby');
-        create_add.setAttribute('placeholder','Enter your hobbies');
-        document.getElementById("hobby_inputdata").appendChild(create_add)
-       
-         }
+    //     if(id=="skill_inputdata"){
+    //         let create_add=document.createElement("input");
+    //         create_add.setAttribute('type','text');
+    //         create_add.setAttribute('class','skill-input');
+    //         create_add.setAttribute('placeholder','Enter your skills');
+    //         document.getElementById("skill_inputdata").appendChild(create_add);
+    //     } 
 
-}
-    
-    
-</script>
-<script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-    import { getFirestore,addDoc,collection,getDocs,updateDoc,doc,getDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBPPPJea_7wZNMX17I1WSKwhrpfxNEcABQ",
-      authDomain: "resume-builder-aceb0.firebaseapp.com",
-      projectId: "resume-builder-aceb0",
-      storageBucket: "resume-builder-aceb0.appspot.com",
-      messagingSenderId: "588683110495",
-      appId: "1:588683110495:web:a19530bf7d9c17ce8d53ea"
-    };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db=getFirestore(app)
-    let params= new URLSearchParams(document.location.search);
-        let id=params.get("id");
-        
-        getDocs(collection(db,"resumes")).then(docSnap =>{
-        docSnap.forEach((doc)=>{
-            if(id==doc.id){
-
-
-                let resumeData=doc.data();
-                editResume = resumeData;
-
-    document.getElementById("new").value = resumeData.title
-    document.getElementById("name").value = resumeData.name
-    document.getElementById("contact").value = resumeData.contact
-    document.getElementById("place").value = resumeData.place
-    document.getElementById("email").value = resumeData.email
-    document.getElementById("objectives").value = resumeData.objectives
-    document.getElementById("fathername").value = resumeData.personal_details.fathername
-    document.getElementById("mothername").value = resumeData.personal_details.mothername
-    document.getElementById("gender").value = resumeData.personal_details.gender
-    document.getElementById("address").value = resumeData.personal_details.Address
-    document.getElementById("DOB").value = resumeData.personal_details.DOB
-    document.getElementById("declaration").value = resumeData.declaration
-
-
-    
-    // document.getElementById("skill").value = existing_data[index].skills[0];
-    let list = ""
-    for (const each of resumeData.skills) {
-        list = list + `<input type="text" class="skill" value="${each}"/>`
-       
-    }
-    document.getElementById("skill_inputdata").innerHTML = list;
-   
-   
-    let language_data = "";
-    for (let each of resumeData.personal_details.languages) {
-        language_data = language_data + `<input type="text" class="language" value="${each}"></input>`
-    }
-    document.getElementById("language_inputdata").innerHTML = language_data
-    
-    
-    let hobby_data = "";
-    for (let each of resumeData.personal_details.hobbies) {
-        hobby_data = hobby_data + `<input type="text" class="hobby" value="${each}"></input>`
-    }
-    document.getElementById("hobby_inputdata").innerHTML = hobby_data
-
-    let education_detail = "";
-    for (let each in resumeData.education) {
-        education_detail = education_detail + `<tr>
-           <td><input type="text"  value="${resumeData.education[each].course_name}" class="course-input" )"/></td>
-           <td><input type="text"  value="${resumeData.education[each].inst_name}" class="inst-input" )"/></td>
-           <td><input type="text"  value="${resumeData.education[each].percentage}" class="percentage-input")"/></td>
-           <td><input type="text" value="${resumeData.education[each].year_of_passed}"  class="year-input")"/></td>
-           </tr>`
-    }
-    document.getElementById("education-data").innerHTML = education_detail
-
-    let project_detail = "";
-    for (let each in resumeData.project) {
-        project_detail = project_detail + `<tr>
-           <td><input type="text"  value="${resumeData.project[each].project_name}" class="project-input" )"/></td>
-           <td><input type="text"  value="${resumeData.project[each].duration}" class="project-input")"/></td>
-           <td><input type="text"  value="${resumeData.project[each].position}" class="project-input")"/></td>
-           <td><input type="text" value="${resumeData.project[each].organization}"  class="project-input")"/></td>
-           </tr>`
-    }
-    document.getElementById("project-data").innerHTML = project_detail
-
-    let experience_detail = "";
-    for (let each in resumeData.experience) {
-        experience_detail = experience_detail + `<tr>
-           <td><input type="text"  value="${resumeData.experience[each].company_name}" class="experience-input" )"/></td>
-           <td><input type="text"  value="${resumeData.experience[each].year}" class="experience-input")"/></td>
-           <td><input type="text"  value="${resumeData.experience[each].position}" class="experience-input")"/></td>
-           <td><input type="text" value="${resumeData.experience[each].year_of_experience}"  class="experience-input")"/></td>
-           </tr>`
-    }
-    document.getElementById("experience-data").innerHTML = experience_detail
-    
-
-
-  
-}
-        });     
-    }) 
-
-updateData.addEventListener('click',(e) =>{
-
-let updated_title = document.getElementById("new").value;
-let updated_name= document.getElementById("name").value;
-let updated_email = document.getElementById("email").value;
-
-let updated_contact = document.getElementById("contact").value;
-
-let updated_objectives = document.getElementById("objectives").value;
-let updated_place = document.getElementById("place").value;
-let updated_fathername=document.getElementById("fathername").value;
-let updated_mothername=document.getElementById("mothername").value
-
-let update_skills=document.getElementsByClassName("skill");
-let update_languages=document.getElementsByClassName("language");
-let update_hobbies=document.getElementsByClassName("hobby");
-// let update_education=document.getElementsByClassName("education-input");
-
-let editskills=[];
-for(const each of update_skills){
-    editskills.push(each.value);
-}
-
-    let new_languages = []
-    for (let update of update_languages) {
-        new_languages.push(update.value)
-        
-    }
-    let new_hobbies = []
-    for (let update of update_hobbies) {
-        new_hobbies.push(update.value)
-        
-    }
-    getDoc(doc(db,"resumes",id)).then(docSnap=>{
-        if(docSnap.exists()){
-for(let each in docSnap.data()['education']){
-let update_course=document.querySelector(".course-input").value;
-let update_inst=document.querySelector(".inst-input").value;
-let update_percentage=document.querySelector(".percentage-input").value;
-let update_year=document.querySelector(".year-input").value;
-
-
-docSnap.data()['education'][each]['course_name']=update_course
-docSnap.data()['education'][each]['inst_name']=update_inst
-docSnap.data()['education'][each]['percentage']=update_percentage
-docSnap.data()['education'][each]['year']=update_year
-
- updateDoc(doc(db,"resumes",id),{
-    title:updated_title,
-    contact:updated_contact,
-    email:updated_email,
-    objectives:updated_objectives,
-    place:updated_place,
-    personal_details:{
-    fathername:updated_fathername,
-    mothername:updated_mothername,
-    languages:new_languages,
-    hobbies:new_hobbies
-    
-},
-    skills:editskills,
-    education:[{
-        course_name:update_course,
-        inst_name:update_inst,
-        percentage:update_percentage,
-        year_of_passed:update_year
-    },
-]
-    
-
-})
-}
-        }
-})
-})
-
-
-    
-  
-</script>
-
-<!-- <script>
-    function addData(id){
-        
-        if(id=="skill_inputdata"){
-        let create_add=document.createElement("input");
-        create_add.setAttribute('type','text');
-        create_add.setAttribute('class','skill-input');
-        create_add.setAttribute('placeholder','Enter your skills');
-        document.getElementById("skill_inputdata").appendChild(create_add);
-        
-        } -->
-        <!-- // else if(id=="language_inputdata"){
-        // let create_add=document.createElement("input");
-        // create_add.setAttribute('type','text');
-        // create_add.setAttribute('class','language-input');
-        // create_add.setAttribute('placeholder','Enter your languages');
-        // document.getElementById("language_inputdata").appendChild(create_add)
-        
-        // }
-        // else if(id=="hobby_inputdata"){
-        // let create_add=document.createElement("input");
-        // create_add.setAttribute('type','text');
-        // create_add.setAttribute('class','hobby-input');
-        // create_add.setAttribute('placeholder','Enter your hobbies');
-        // document.getElementById("hobby_inputdata").appendChild(create_add)
-       
-        // }
-    } -->
-    
-<!-- //  function educataddData(){
-
-//     // else if(id=="education-data"){
-//     let existing_list = localStorage.getItem("resume_list");
-//     let existing_data = JSON.parse(existing_list);  
-//     let education_length=existing_data[index].education.length;
-//     let tbody=document.getElementById("education-data").innerHTML
-//     let newdata=`<tr>
-//         <td> <input type="text" onkeyup="create(this,${education_length},'course_name','education')"></td>
-//         <td> <input type="text" onkeyup="create(this,${education_length},'inst_name','education')"></td>
-//         <td> <input type="number" onkeyup="create(this,${education_length},'percentage','education')"></td>
-//         <td> <input type="number" onkeyup="create(this,${education_length},'year_of_passed','education')"></td>
-//         </tr>`
-//     document.getElementById("education-data").innerHTML=tbody+newdata
-//     existing_data[index].education[education_length]={course_name:"",
-//                                                       inst_name:"",
-//                                                       percentage:"",
-//                                                       year_of_passed:""}
-//      localStorage.setItem("resume_list",JSON.stringify(existing_data))                                                 
-// }
-
-// function experienceaddData(){
-//     // else if(id=='experience-data'){
-//     let existing_list = localStorage.getItem("resume_list");
-//     let existing_data = JSON.parse(existing_list);  
-//     let experience_length=existing_data[index].experience.length
-//     let new_experience=document.getElementById("experience-data").innerHTML
-//     let experience_newdata=`<tr>
-//         <td> <input type="text" onkeyup="create(this,${experience_length},'company_name','experience')"/></td>
-//         <td> <input type="text" onkeyup="create(this,${experience_length},'year','experience')"/></td>
-//         <td> <input type="text" onkeyup="create(this,${experience_length},' position','experience')"/></td>
-//         <td> <input type="text" onkeyup="create(this,${experience_length},'year_of_experience','experience')"/></td>
-//         </tr>`
-//     document.getElementById("experience-data").innerHTML=new_experience+experience_newdata
-//     existing_data[index].experience[experience_length]={company_name:"",
-//                                                       year:"",
-//                                                       position:"",
-//                                                       year_of_experience:""}
-// localStorage.setItem("resume_list",JSON.stringify(existing_data))                                                         
-
-    
-// }
-
-
-// function projectaddData(){
-//     // else if(id=='project-data'){
-//     let existing_list = localStorage.getItem("resume_list");
-//     let existing_data = JSON.parse(existing_list);  
-//     let project_length =existing_data[index].project.length
-//     let new_project=document.getElementById("project-data").innerHTML
-//     let project_newdata=`<tr>
-//         <td> <input type="text" onkeyup="create(this,${project_length},'project_name','project')"/></td>
-//         <td> <input type="text" onkeyup="create(this,${project_length},'duration','project')"/></td>
-//         <td> <input type="text" onkeyup="create(this,${project_length},' position','project')"/></td>
-//         <td> <input type="text" onkeyup="create(this,${project_length},'organization','project')"/></td>
-//         </tr>`
-//     document.getElementById("project-data").innerHTML=new_project+project_newdata
-//     existing_data[index].project[project_length]={project_name:"",
-//                                                       duration:"",
-//                                                       position:"",
-//                                                       organization:""}
-//     localStorage.setItem("resume_list",JSON.stringify(existing_data))
-//     }
-
-    
-
-
-
-    
-    
-    
-    
-    // let existing_list = localStorage.getItem("resume_list");
-    // let existing_data = JSON.parse(existing_list);
-    // let params = new URLSearchParams(document.location.search);
-    // let index = params.get( "index");
-    // existing_data[index].education[ele_index][key]=ele.value
-    //  localStorage.setItem("resume_list",JSON.stringify(existing_data))
-
-
-    //EDIT FUNCTION//
-    // function editData() {
-        // let idparams = new URLSearchParams(document.location.search);
-        // let id1 = idparams.get("id");
-
-
-    //     let existing_list = localStorage.getItem("resume_list");
-    //     let existing_data = JSON.parse(existing_list);
-       
-       
-
-    //     let updated_name = document.getElementById("name").value;
-    //     existing_data[index].name = updated_name
-
-    //     let updated_contact = document.getElementById("contact").value;
-    //     existing_data[index].contact = updated_contact
-
-    //     let updated_place = document.getElementById("place").value;
-    //     existing_data[index].place = updated_place
-        
-    //     let updated_email = document.getElementById("email").value;
-    //     existing_data[index].email = updated_email
-
-
-        // let data = [];
-        // for (let each in existing_data) {//in each contians all resumes index
-        //     if (index == each) {
-        //         existing_data[index].title = changedtitle;
-        //         existing_data[index].name = update_name;
-        //         existing_data[index].contact = changedcontact;
-        //         // existing_data[index].update=newdata
-        //     // 
-        //     }
-
-
-        //     data.push(existing_data[each])
-        // }
-
-        // let allSkillData = document.getElementsByClassName("skill-input")
-        // let skills = []
-        // for (let newSkill of allSkillData) {
-        //     skills.push(newSkill.value)
-        // }
-        // resumeData.skills = skills
-
-    //     let updation_data = document.getElementsByClassName("hobby-input")
-    //     let changed_data = []
-    //     for (let newhobby of updation_data) {
-    //         changed_data.push(newhobby.value)
-    //         existing_data[index].personal_details.hobbies = changed_data
-    //     }
-
-    //     let update_data = document.getElementsByClassName("language-input")
-    //     let new_data = []
-    //     for (let update of update_data) {
-    //         new_data.push(update.value)
-    //         existing_data[index].personal_details.languages = new_data
-    //     }
-   
-    //     localStorage.setItem("resume_list", JSON.stringify(existing_data))
-    //     window.location = "list.html"
     // }
-        
+</script>
+    
+ 
 
-</script> -->
-
-
-if(!localStorage.getItem("userdatas")){
-    location="login.html"
-}
 
 </html>
