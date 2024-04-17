@@ -37,13 +37,7 @@
                     else if(source=="edit"){
                     editResume(editData)
                     } 
-                    // else if(source=="update"){
-                    //     // updateResume(editData)
-                    
-                    // } 
-                    // console.log("editData",editData)
-                    //resumeData[par_key][ele_index][key]=ele.value;
-
+                   
                 }
             })
         })
@@ -73,7 +67,7 @@ async function register(){
     // console.log(datname,email,password)
    
  window.location="login.html"
- alert(1)
+ alert("You are login successfully")
 }
 }
 window.register=register
@@ -106,9 +100,7 @@ function logindata(){
             }
 
         })
-        // if (!userdata) {
-        //     alert("your email or password incorrect")
-        // }
+       
     })
 
   }
@@ -176,8 +168,8 @@ function listData(){
            
             
         // let eachResume=doc.data()
-       renderHTML=renderHTML+`<li><a href="view.html?id=${doc.id}">${doc.data().title}</a><button type="button" onclick="testData('${doc.id}')">Delete</button>
-       <a href="edit.html?id=${doc.id}"><button type="button">Edit</button></a></li>`
+       renderHTML=renderHTML+`<tr><td><a href="view.html?id=${doc.id}">${doc.data().title}</a></td><td><button type="button" class="btn btn-danger" onclick="testData('${doc.id}')">Delete</button></td>
+      <td> <a href="edit.html?id=${doc.id}"><button class="btn btn-info" type="button">Edit</button></a></td></tr>`
        
    
 
@@ -195,10 +187,7 @@ listData()
     }
     window.testData=deleteData
 
-    // if(!localStorage.getItem("userdatas")){
-    //     location="login.html"
-    // }
-
+    
 function getViewData(resumeData){
                  document.getElementById("titleview").innerHTML= editData.title;
                  document.getElementById("name").innerHTML= editData.name;
@@ -291,7 +280,7 @@ function logout(){
     window.location="login.html"
 }
 
-    
+    window.logout=logout
 
 function addData(id){
     if(id=='skill_inputdata'){
@@ -370,7 +359,7 @@ function editResume(editData){
         education_detail = education_detail + `<tr>
            <td><input type="text"  value="${editData.education[each].course_name}" class="education-input" onkeyup="updateResume(this,${each},'course_name','education')"/></td>
            <td><input type="text"  value="${editData.education[each].inst_name}" class="education-input" onkeyup="updateResume(this,${each},'inst_name','education')"/></td>
-           <td><input type="text"  value="${editData.education[each].percentage}" class="education-input"  onkeyup="updateResume(this,${each}),'percentage','education')"/></td>
+           <td><input type="text"  value="${editData.education[each].percentage}" class="education-input"  onkeyup="updateResume(this,${each},'percentage','education')"/></td>
            <td><input type="text" value="${editData.education[each].year_of_passed}"  class="education-input"  onkeyup="updateResume(this,${each}, 'year_of_passed','education')"/></td>
            </tr>`
     }
@@ -401,7 +390,7 @@ function editResume(editData){
 window.editResume=editResume
         
 
- function updatedata(){
+async function updatedata(){
 
 let updated_title = document.getElementById("new").value;
 let updated_name= document.getElementById("name").value;
@@ -435,23 +424,10 @@ for(const each of update_skills){
         
     }
    
-   
-// // getDoc(doc(db,"resumes",id)).then(docSnap=>{
-// // if(docSnap.exists()){
-// // for(let each in docSnap.data()['education']){
-// // let update_course=document.querySelector(".course-input").value;
-// // let update_inst=document.querySelector(".inst-input").value;
-// // let update_percentage=document.querySelector(".percentage-input").value;
-// // let update_year=document.querySelector(".year-input").value;
 
-
-// // docSnap.data()['education'][each]['course_name']=update_course
-// // docSnap.data()['education'][each]['inst_name']=update_inst
-// // docSnap.data()['education'][each]['percentage']=update_percentage
-// // docSnap.data()['education'][each]['year']=update_year
 let params = new URLSearchParams(document.location.search);
 let id =params.get("id");
-updateDoc(doc(db,"resumes",id),{
+await updateDoc(doc(db,"resumes",id),{
     
     title:updated_title,
     name:updated_name,
@@ -477,7 +453,9 @@ updateDoc(doc(db,"resumes",id),{
    
 
 })
+location="list.html"
 }
+
 window.updatedata=updatedata
        
 
@@ -497,60 +475,59 @@ window.updateResume=updateResume
 
     
   
-function educataddData(){
+function addNewData(id){
+    if(id=="education-data"){
      let education_length=editData.education.length;
-    let tbody=document.getElementById("education-data").innerHTML
+    let tbody=document.getElementById("education-data")
     let newdata=`<tr>
         <td> <input type="text" onkeyup="updateResume(this,${education_length},'course_name','education')"></td>
         <td> <input type="text" onkeyup="updateResume(this,${education_length},'inst_name','education')"></td>
         <td> <input type="number" onkeyup="updateResume(this,${education_length},'percentage','education')"></td>
         <td> <input type="number" onkeyup="updateResume(this,${education_length},'year_of_passed','education')"></td>
         </tr>`
-    document.getElementById("education-data").innerHTML=tbody+newdata
-    editData.education[education_length]={course_name:"",
-                                          inst_name:"",
-                                          percentage:"",
-                                          year_of_passed:""}
-                                                     
-}
-window. educataddData= educataddData
+        editData.education[education_length]={course_name:"",
+        inst_name:"",
+        percentage:"",
+        year_of_passed:""}
+    tbody.insertAdjacentHTML('beforeend',newdata)
+    }
 
-function experienceaddData(){
+
+
+// function experienceaddData(){
+    else if(id=="experience-data"){
     let experience_length=editData.experience.length
-    let new_experience=document.getElementById("experience-data").innerHTML
+    let new_experience=document.getElementById("experience-data")
     let experience_newdata=`<tr>
         <td> <input type="text" onkeyup="updateResume(this,${experience_length},'company_name','experience')"/></td>
         <td> <input type="text" onkeyup="updateResume(this,${experience_length},'year','experience')"/></td>
         <td> <input type="text" onkeyup="updateResume(this,${experience_length},' position','experience')"/></td>
         <td> <input type="text" onkeyup="updateResume(this,${experience_length},'year_of_experience','experience')"/></td>
         </tr>`
-    document.getElementById("experience-data").innerHTML=new_experience+experience_newdata
     editData.experience[experience_length]={company_name:"",
                                                       year:"",
                                                       position:"",
                                                       year_of_experience:""}   
+     new_experience.insertAdjacentHTML('beforeend',experience_newdata)                                                  
 }
-window.experienceaddData=experienceaddData
 
 
-function projectaddData(){
-   
+    else if(id=="project-data"){
     let project_length =editData.project.length
-    let new_project=document.getElementById("project-data").innerHTML
+    let new_project=document.getElementById("project-data")
     let project_newdata=`<tr>
         <td> <input type="text" onkeyup="updateResume(this,${project_length},'project_name','project')"/></td>
         <td> <input type="text" onkeyup="updateResume(this,${project_length},'duration','project')"/></td>
         <td> <input type="text" onkeyup="updateResume(this,${project_length},' position','project')"/></td>
         <td> <input type="text" onkeyup="updateResume(this,${project_length},'organization','project')"/></td>
         </tr>`
-    document.getElementById("project-data").innerHTML=new_project+project_newdata
     editData.project[project_length]={project_name:"",
                                      duration:"",
                                      position:"",
-                                    
-                                     organization:""}
+                                    organization:""}
+     new_project.insertAdjacentHTML('beforeend',project_newdata)
    
     }
-    window.projectaddData=projectaddData
-
+}
+    window.addNewData=addNewData
     

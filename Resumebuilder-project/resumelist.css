@@ -1,0 +1,16 @@
+.edu{
+    display: flex;
+    justify-content: center;
+    /* align-items:center; */
+}
+.input{
+    margin: 0 auto; 
+    width: 70%; 
+    overflow-y: hidden;
+}
+.main{
+    margin-left: 1%;
+}
+.row{
+    margin-left: 1%;
+}

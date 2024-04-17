@@ -3,6 +3,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="resumebuilder.js"></script>
     <script type="module" src="firebase.js">
     
@@ -10,16 +12,24 @@
 
 
 </head>
-<body>
-    <h1>VIEW RESUME</h1>
-    <ul>
-        <li><a href="#" onclick="goToTemplate(1)">Template 1</a></li>
-        <li><a href="#" onclick="goToTemplate(2)">Template 2</a></li>
-        <li><a href="#" onclick="goToTemplate(3)">Template 3</a></li>
-        <!-- <li><a href="#" onclick="goToTemplate(4)">Template 4</a></li>
-        <li><a href="#" onclick="goToTemplate(5)">Template 5</a></li> -->
+<body  style=" background: rgb(250, 244, 247); 
+background: linear-gradient(90deg, rgb(243, 233, 237) -11%, rgba(231,186,207,1) 14%, rgba(229,188,208,1) 19%, rgba(227,192,210,1) 27%, rgba(220,203,215,1) 50%, rgba(217,207,217,1) 59%, rgba(213,213,220,1) 72%, rgba(205,227,226,0.25253851540616246) 100%);">
+    <div class="head d-flex justify-content-around" style="background-color:rgba(20, 19, 19, 0.459);">
+        <h1 class="header mt-2">VIEW RESUME </h1>
+        <button type="button" class="btn btn-danger mt-3 mb-3" onclick="logout()">Logout</button>>
+    </div>
+</div>
+<div class="head d-flex  justify-content-center align-content-center">
+    <ul class="list-group   " >
+        <li ><a href="#" onclick="goToTemplate(1)">Template 1</a></li>
+        <li ><a href="#" onclick="goToTemplate(2)">Template 2</a></li>
+        <li  ><a href="#" onclick="goToTemplate(3)">Template 3</a></li>
+    
     </ul>
+   
+</div>
 
+    <!-- 
     <label ><h1>TITLE</h1></label>
     <h2 id="titleview"></h2>
     
@@ -93,7 +103,7 @@
     <h2 id="declaration"></h2>
     
  
- 
+  -->
 
     
 </body>
